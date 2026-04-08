@@ -280,6 +280,7 @@
           <table>
             <thead>
               <tr>
+                <th>Name</th>
                 <th>Email</th>
                 <th>Tokens</th>
                 <th>Free Regens</th>
@@ -462,8 +463,13 @@
   function renderUsers(users) {
     const tbody = document.getElementById("users-tbody");
     if (!users.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No users found.</td></tr>'; return; }
-    tbody.innerHTML = users.map(u => `
+    tbody.innerHTML = users.map(u => {
+      const name = (u.firstName || u.lastName)
+        ? `${u.firstName || ''} ${u.lastName || ''}`.trim()
+        : '<span style="color:var(--muted)">—</span>';
+      return `
       <tr>
+        <td style="font-weight:600">${name}</td>
         <td class="email-cell">${u.email || '<span style="color:var(--muted)">—</span>'}</td>
         <td><span class="badge badge-purple">♦ ${u.tokenBalance ?? 0}</span></td>
         <td>${u.freeRegenBalance ?? 0}</td>
@@ -473,7 +479,7 @@
           <button class="btn-sm btn-delete" onclick="confirmDelete('${u.id}', '${(u.email||'').replace(/'/g,"\\'")}')">Delete</button>
         </td>
       </tr>
-    `).join("");
+    `}).join("");
   }
 
   window.filterUsers = () => {
