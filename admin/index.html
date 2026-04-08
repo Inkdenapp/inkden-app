@@ -369,7 +369,7 @@
     appId:             "1:478604626639:web:REPLACE_WITH_WEB_APP_ID"
   };
 
-  const ADMIN_EMAIL = "zach@inkden.app";
+  const ADMIN_EMAILS = ["zach@inkden.app", "ztapolci@gmail.com"];
 
   const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -387,7 +387,7 @@
     err.textContent = "";
     try {
       const cred = await signInWithEmailAndPassword(auth, email, pass);
-      if (cred.user.email !== ADMIN_EMAIL) {
+      if (!ADMIN_EMAILS.includes(cred.user.email)) {
         await signOut(auth);
         err.textContent = "Access denied.";
       }
@@ -399,7 +399,7 @@
   window.doLogout = () => signOut(auth);
 
   onAuthStateChanged(auth, user => {
-    if (user && user.email === ADMIN_EMAIL) {
+    if (user && ADMIN_EMAILS.includes(user.email)) {
       document.getElementById("login-screen").style.display = "none";
       document.getElementById("app").style.display = "block";
       loadDashboard();
