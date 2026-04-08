@@ -613,8 +613,11 @@
     const label = isDesign ? "Design" : "Mockup";
     const time  = data.createdAt ? timeAgo(data.createdAt.toDate()) : "";
     const prompt = data.prompt ? `<div class="feed-prompt">"${data.prompt}"</div>` : "";
+    const img = data.imageURL
+      ? `<img src="${data.imageURL}" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--border);flex-shrink:0;" />`
+      : `<div class="feed-type-badge ${cls}">${icon}</div>`;
     return `
-      <div class="feed-type-badge ${cls}">${icon}</div>
+      ${img}
       <div class="feed-info">
         <div class="feed-name">${label}: ${data.name || "Untitled"}</div>
         <div class="feed-email">${data.email || "unknown"}</div>
